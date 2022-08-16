@@ -29,13 +29,13 @@ router.route("/:username")
 
         return response.json(profile);
     })
-    .put(async ({params: {username}}, response) => {
+    .put(async ({params: {username}, body: profile}, response) => {
         if (getAuthenticatedUserName() !== username) {
             response.status(403);
             return response.send();
         }
 
-        let profile = await Profiles.updateOne({username}, profile);
+        profile = await Profiles.updateOne({username}, profile);
         return response.json(profile);
     })
     .delete(async ({params: {username}}, response) => {
