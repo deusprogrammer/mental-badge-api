@@ -32,7 +32,7 @@ router.route("/:username")
             return response.send();
         }
     })
-    .put(async ({params: {username}, body: profile, user: authUser}, response) => {
+    .put(async ({params: {username}, body: profile, user: {username: authUser}}, response) => {
         try {
             console.log("AUTHED USER " + authUser);
             console.log("USERNAME    " + username);
@@ -48,7 +48,7 @@ router.route("/:username")
             return response.send();
         }
     })
-    .delete(async ({params: {username}, user: authUser}, response) => {
+    .delete(async ({params: {username}, user: {username: authUser}}, response) => {
         try {
             if (authUser !== username) {
                 response.status(403);
