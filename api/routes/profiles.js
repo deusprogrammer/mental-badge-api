@@ -19,31 +19,46 @@ router.route("/")
 
 router.route("/:username")
     .get(async ({params: {username}}, response) => {
-        let profile = await Profiles.findOne({username}, null).exec();
-        if (!profile) {
-            response.status(404);
+        try {
+            let profile = await Profiles.findOne({username}, null).exec();
+            if (!profile) {
+                response.status(404);
+                return response.send();
+            }
+
+            return response.json(profile);
+        } catch (error) {
+            response.status(500);
             return response.send();
         }
-
-        return response.json(profile);
     })
     .put(async ({params: {username}, body: profile, user: authUser}, response) => {
-        if (authUser !== username) {
-            response.status(403);
+        try {
+            if (authUser !== username) {
+                response.status(403);
+                return response.send();
+            }
+
+            profile = await Profiles.updateOne({username}, profile);
+            return response.json(profile);
+        } catch (error) {
+            response.status(500);
             return response.send();
         }
-
-        profile = await Profiles.updateOne({username}, profile);
-        return response.json(profile);
     })
     .delete(async ({params: {username}, user: authUser}, response) => {
-        if (authUser !== username) {
-            response.status(403);
+        try {
+            if (authUser !== username) {
+                response.status(403);
+                return response.send();
+            }
+
+            await Profiles.deleteOne({params: {username}});
+            return response.send();
+        } catch (error) {
+            response.status(500);
             return response.send();
         }
-
-        await Profiles.deleteOne({params: {username}});
-        return response.send();
     })
 
 publicRouter.route("/:id")
