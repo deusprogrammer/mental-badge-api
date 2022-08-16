@@ -34,8 +34,6 @@ router.route("/:username")
     })
     .put(async ({params: {username}, body: profile, user: {username: authUser}}, response) => {
         try {
-            console.log("AUTHED USER " + JSON.stringify(authUser));
-            console.log("USERNAME    " + username);
             if (authUser !== username) {
                 response.status(403);
                 return response.send();
