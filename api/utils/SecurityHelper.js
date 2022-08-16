@@ -24,6 +24,10 @@ export let authenticatedUserHasRole = (request, role) => {
     return false;
 }
 
+export let getAuthenticatedUserName = (request) => {
+    return request.user.username;
+}
+
 export let authenticatedUserHasAccessToChannel = (request, channelId) => {
     console.log("USER: " + JSON.stringify(request.user, null, 5));
     console.log("CHANNEL ID: " + channelId);
