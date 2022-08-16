@@ -1,8 +1,6 @@
 const express = require('express');
 const Profiles = require('../models/profiles');
 
-import {getAuthenticatedUserName, authenticatedUserHasRole} from '../utils/SecurityHelper';
-
 export let router = express.Router();
 export let publicRouter = express.Router();
 router.route("/")
@@ -29,8 +27,8 @@ router.route("/:username")
 
         return response.json(profile);
     })
-    .put(async ({params: {username}, body: profile}, response) => {
-        if (getAuthenticatedUserName() !== username) {
+    .put(async ({params: {username}, body: profile, user: authUser}, response) => {
+        if (authUser !== username) {
             response.status(403);
             return response.send();
         }
@@ -38,8 +36,8 @@ router.route("/:username")
         profile = await Profiles.updateOne({username}, profile);
         return response.json(profile);
     })
-    .delete(async ({params: {username}}, response) => {
-        if (getAuthenticatedUserName() !== username) {
+    .delete(async ({params: {username}, user: authUser}, response) => {
+        if (authUser !== username) {
             response.status(403);
             return response.send();
         }
