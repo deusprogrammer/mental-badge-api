@@ -22,17 +22,17 @@ router.route("/")
         return response.json(profile);
     })
 
-router.route("/:id")
-    .get(async ({params: {id: _id}}, response) => {
-        let profile = await Profiles.findOne({_id}, null).exec();
+router.route("/:username")
+    .get(async ({params: {username}}, response) => {
+        let profile = await Profiles.findOne({username}, null).exec();
         return response.json(profile);
     })
-    .put(async ({params: {id: _id}}, response) => {
-        let profile = await Profiles.updateOne({_id}, profile);
+    .put(async ({params: {username}}, response) => {
+        let profile = await Profiles.updateOne({username}, profile);
         return response.json(profile);
     })
-    .delete(async ({params: {id: _id}}, response) => {
-        await Profiles.deleteOne({params: {_id}});
+    .delete(async ({params: {username}}, response) => {
+        await Profiles.deleteOne({params: {username}});
         return response.send();
     })
 
